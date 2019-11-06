@@ -7,15 +7,15 @@ import homework.lesson1.objects.Orange;
 public class Main {
     public static void main(String[] args) {
 
-        //Task 1
+        //Task 1,2
         Integer[] integers = {1,2,3,4,5};
         ClassArray<Integer> classArray = new ClassArray<>(integers);
         classArray.changePosition();
 
         System.out.println(classArray.arrayToArrayList());
-        //End Task1
+        //End Task 1,2
 
-        //Task2
+        //Task3
         Box<Orange> boxOrange = new Box<>();
         boxOrange.addToBox(new Orange(1.0f));
         boxOrange.addToBox(new Orange(1.5f));
@@ -33,6 +33,6 @@ public class Main {
         System.out.println("BoxApple = " + boxApple.getFruits());
         System.out.println("BoxOrange = " + boxOrange.getFruits());
 
-        //End Task2
+        //End Task3
     }
 }

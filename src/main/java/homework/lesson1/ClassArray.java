@@ -29,7 +29,6 @@ public class ClassArray<T> {
         temp = arr[indexFrom];
         arr[indexFrom] = arr[indexTo];
         arr[indexTo] = temp;
-
     }
 
     public List<T> arrayToArrayList(){
