@@ -7,8 +7,8 @@ public class Box<T extends Fruit> {
 
     List<T> fruits = new ArrayList<>();
 
-    public void addToBox(T _fruit){
-        this.fruits.add(_fruit);
+    public void addToBox(T fruit){
+        this.fruits.add(fruit);
     }
 
     private double getWeight(){
