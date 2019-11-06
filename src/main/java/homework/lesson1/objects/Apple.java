@@ -1,6 +1,6 @@
 package homework.lesson1.objects;
 
-public class Apple<T extends Number> extends Fruit{
+public class Apple<T extends Number> extends Fruit<T>{
 
     public Apple(T weight) {
         this.weight = weight;
