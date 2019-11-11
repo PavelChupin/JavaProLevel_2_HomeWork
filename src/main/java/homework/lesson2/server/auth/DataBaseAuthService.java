@@ -72,7 +72,7 @@ public class DataBaseAuthService implements IAuthService {
         }
 
         ResultSet rs = null;
-        //Лезим в базу, и проверяем наличие логина и пароля.
+        //Лезим в базу, и проверяем наличие Ника по логину и паролю.
         try (Statement statement = connToDataBase.getConnection().createStatement()) {
             rs = statement.executeQuery(String.format("select Nick from User where Login = '%s' and Password = '%s'", login, pass));
             while (rs.next()) {
