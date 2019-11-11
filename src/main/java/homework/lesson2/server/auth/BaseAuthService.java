@@ -42,7 +42,7 @@ public class BaseAuthService implements IAuthService {
     }
 
     @Override
-    public void changeNickByLogin(String login, String newNick) throws SQLException {
+    public void changeNick(String oldNick, String newNick) throws SQLException {
 
     }
 

@@ -53,6 +53,18 @@ public class Server {
         broadcastClientList();
     }
 
+    //Метод обновления ника пользователя
+    public synchronized void changesubscribe(ClientHandler clientHandler) {
+        broadcastClientList();
+    }
+
+    //Метод отписки пользователя от сервера
+    public synchronized void unSubscribe(ClientHandler clientHandler) {
+        clients.remove(clientHandler);
+        broadcastClientList();
+    }
+
+    //Добавления и обновления списка пользователей в чате
     private void broadcastClientList() {
         List<String> nickNames = new ArrayList<>();
         for (ClientHandler client : clients) {
@@ -62,11 +74,7 @@ public class Server {
         broadcastMessage(message.toJson(), null);
     }
 
-    //Метод отписки пользователя от сервера
-    public synchronized void unSubscribe(ClientHandler clientHandler) {
-        clients.remove(clientHandler);
-        broadcastClientList();
-    }
+
 
     public IAuthService getAuthService() {
         return authService;
@@ -96,18 +104,27 @@ public class Server {
         broadcastMessage(message.toJson(), unfilteredClients);
     }
 
-    public synchronized void messageToPrivateLogin(String nickName, String s) {
+    public synchronized void messageToPrivateLogin(Message message) {
         for (ClientHandler client : clients) {
-            if (client.getClientName().equals(nickName)) {
-                client.sendMessage(s);
+            if (client.getClientName().equals(message.privateMessage.to)) {
+                client.sendMessage(message.toJson());
                 break;
             }
         }
     }
 
-    public synchronized void messageToPrivateLogin(Message message) {
+    public synchronized void messageChangeNickOk(Message message) {
         for (ClientHandler client : clients) {
-            if (client.getClientName().equals(message.privateMessage.to)) {
+            if (client.getClientName().equals(message.changeNickOkMessage.newNick)) {
+                client.sendMessage(message.toJson());
+                break;
+            }
+        }
+    }
+
+    public synchronized void messageChangeNickErr(Message message, ClientHandler clientHandler) {
+        for (ClientHandler client : clients) {
+            if (client.getClientName().equals(clientHandler.getClientName())) {
                 client.sendMessage(message.toJson());
                 break;
             }
@@ -127,6 +144,5 @@ public class Server {
         }
         return value;
     }
-
 
 }

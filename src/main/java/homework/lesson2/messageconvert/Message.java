@@ -15,6 +15,9 @@ public class Message {
     public AuthErrorMessage authErrorMessage;
     public PublicMessage publicMessage;
     public ClientListMessage clientListMessage;
+    public ChangeNickMessage changeNickMessage;
+    public ChangeNickOkMessage changeNickOkMessage;
+    public ChangeNickErrMessage changeNickErrMessage;
 
     public  String toJson() {
         return new Gson().toJson(this);
@@ -43,6 +46,25 @@ public class Message {
         m.publicMessage = new PublicMessage(from, message);
         return m;
     }
+
+    public static Message createChangeNick(String newNick) {
+        Message m = create(Command.CHANGE_NICK);
+        m.changeNickMessage = new ChangeNickMessage(newNick);
+        return m;
+    }
+
+    public static Message createChangeNickOK(String newNick, String message) {
+        Message m = create(Command.CHANGE_NICK_OK);
+        m.changeNickOkMessage = new ChangeNickOkMessage(newNick,message);
+        return m;
+    }
+
+    public static Message createChangeNickErr(String errMessage) {
+        Message m = create(Command.CHANGE_NICK_ERR);
+        m.changeNickErrMessage = new ChangeNickErrMessage(errMessage);
+        return m;
+    }
+
     public static Message createPrivate(String from, String to, String message) {
         Message m = create(Command.PRIVATE_MESSAGE);
         m.privateMessage = new PrivateMessage(from, to, message);

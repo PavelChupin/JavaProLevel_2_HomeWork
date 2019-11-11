@@ -52,8 +52,6 @@ public class ConnToDataBase {
             value = serverProperties.getProperty(property);
         } catch (IOException e) {
             throw new RuntimeException("Failed to read application.properties file", e);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid port value", e);
         }
         return value;
     }

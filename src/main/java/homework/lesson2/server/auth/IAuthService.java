@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 import java.sql.SQLException;
 
 public interface IAuthService {
-    void start() throws SQLException;
+    void start() throws SQLException, ClassNotFoundException;
 
     void stop();
 
@@ -14,6 +14,6 @@ public interface IAuthService {
     String getNickByLoginPass(String login, String pass) throws SQLException;
 
 
-    void changeNickByLogin(String login, String newNick) throws SQLException;
+    void changeNick(String oldNick, String newNick) throws SQLException, RuntimeException;
 
 }
