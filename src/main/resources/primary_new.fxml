@@ -42,8 +42,9 @@
                 </HBox>
             <HBox prefHeight="0.0" prefWidth="478.0">
                <children>
-                        <TextField fx:id="messageText" onAction="#sendText" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="messageText" onAction="#sendText" prefHeight="25.0" prefWidth="406.0" HBox.hgrow="ALWAYS" />
                         <Button fx:id="sendMessageButton" minWidth="100.0" mnemonicParsing="false" onAction="#sendMessage" text="Send" />
+                  <Button fx:id="changeNickButton" mnemonicParsing="false" onAction="#changeNick" prefHeight="25.0" prefWidth="96.0" text="ChangeNick" />
                </children>
             </HBox>
             </children>
@@ -51,5 +52,11 @@
                 <Insets bottom="5.0" right="5.0" />
             </padding>
         </VBox>
+      <HBox fx:id="changeNickPanel" layoutX="223.0" layoutY="70.0" prefHeight="35.0" prefWidth="295.0" visible="false">
+         <children>
+            <TextField fx:id="textChangeNick" />
+            <Button fx:id="changeNickButtonOk" mnemonicParsing="false" onAction="#changeNickOk" prefHeight="25.0" prefWidth="96.0" text="Ok" />
+         </children>
+      </HBox>
     </children>
 </AnchorPane>
