@@ -1,8 +1,16 @@
 package homework.lesson2.server;
 
+import java.sql.SQLException;
+
 public class MainServer {
 
     public static void main(String[] args) {
-        new Server();
+        try {
+            new Server();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

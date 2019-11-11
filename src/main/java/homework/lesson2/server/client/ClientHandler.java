@@ -9,6 +9,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,7 +33,11 @@ public class ClientHandler {
                 try {
                     authentication(timeout);
                     readMessages();
-                } catch (IOException e) {
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                catch (IOException e) {
                     e.printStackTrace();
                 } finally {
                     closeConnection();
@@ -77,7 +82,7 @@ public class ClientHandler {
     }
     */
     // "/auth login password"
-    private void authentication(int timeout) throws IOException {
+    private void authentication(int timeout) throws IOException, SQLException {
         while (true) {
             Timer timeoutTimer = new Timer(true);
             timeoutTimer.schedule(new TimerTask() {

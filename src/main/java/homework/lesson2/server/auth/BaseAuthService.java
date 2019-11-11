@@ -3,6 +3,7 @@ package homework.lesson2.server.auth;
 import homework.lesson2.server.data.User;
 
 import javax.annotation.Nullable;
+import java.sql.SQLException;
 import java.util.List;
 
 public class BaseAuthService implements IAuthService {
@@ -38,6 +39,11 @@ public class BaseAuthService implements IAuthService {
             }
         }
         return null;
+    }
+
+    @Override
+    public void changeNickByLogin(String login, String newNick) throws SQLException {
+
     }
 
 }
