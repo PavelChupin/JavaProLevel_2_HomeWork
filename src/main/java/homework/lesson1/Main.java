@@ -29,7 +29,8 @@ public class Main {
         boxApple.addToBox(new Apple(1.5f));
         System.out.println(boxApple.compare(boxOrange));
         //Пересыпаем фрукты
-        boxApple.changeBox(boxOrange);
+        //boxApple.changeBox(boxOrange);
+
         System.out.println("BoxApple = " + boxApple.getFruits());
         System.out.println("BoxOrange = " + boxOrange.getFruits());
 

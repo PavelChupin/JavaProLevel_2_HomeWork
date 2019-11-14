@@ -23,7 +23,7 @@ public class Box<T extends Fruit> {
         return this.getWeight() == box.getWeight();
     }
 
-    public void changeBox(Box box){
+    public void changeBox(Box<T> box){
         List<T> tempFruit = new ArrayList<>(this.fruits);
         this.fruits.clear();
         this.fruits.addAll(box.getFruits());
