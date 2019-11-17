@@ -71,20 +71,21 @@ public class DataBaseAuthService implements IAuthService {
             return null;
         }
 
-        ResultSet rs = null;
+        //ResultSet rs = null;
         //Лезим в базу, и проверяем наличие Ника по логину и паролю.
-        try (Statement statement = connToDataBase.getConnection().createStatement()) {
-            rs = statement.executeQuery(String.format("select Nick from User where Login = '%s' and Password = '%s'", login, pass));
+        try (Statement statement = connToDataBase.getConnection().createStatement();
+             ResultSet rs = statement.executeQuery(String.format("select Nick from User where Login = '%s' and Password = '%s'", login, pass)); ) {
+            //rs = statement.executeQuery(String.format("select Nick from User where Login = '%s' and Password = '%s'", login, pass));
             while (rs.next()) {
                 nick = rs.getString("Nick");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
+        } /*finally {
             if (rs != null) {
                 rs.close();
             }
-        }
+        }*/
         return nick;
     }
 
@@ -109,20 +110,21 @@ public class DataBaseAuthService implements IAuthService {
     }
 
     private boolean checkNickByBusy(String newNick) throws SQLException {
-        ResultSet rs = null;
+        //ResultSet rs = null;
         int count = 0;
-        try (Statement statement = connToDataBase.getConnection().createStatement()) {
-            rs = statement.executeQuery(String.format("select 1 from User where Nick = '%s'", newNick));
+        try (Statement statement = connToDataBase.getConnection().createStatement();
+             ResultSet rs = statement.executeQuery(String.format("select 1 from User where Nick = '%s'", newNick));) {
+            //rs = statement.executeQuery(String.format("select 1 from User where Nick = '%s'", newNick));
             while (rs.next()) {
                 count = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
+        } /*finally {
             if (rs != null) {
                 rs.close();
             }
-        }
+        }*/
         return count > 0;
     }
 
