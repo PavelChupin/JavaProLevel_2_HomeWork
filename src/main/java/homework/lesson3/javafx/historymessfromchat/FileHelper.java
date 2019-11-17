@@ -15,11 +15,24 @@ public class FileHelper {
             createPathToSave();
         }
         this.fileHistory = new File(getProperty(FILE_HISTORY_PATH) + "/" + login + ".txt");
+
+        //Если файл не сушествует физически, надо его создать
+        if(!fileHistory.exists()){
+            try {
+                fileHistory.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void writeToFileHistory(String message){
+        if (message == null || message.isEmpty()){
+            return;
+        }
+
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.fileHistory,true))){
-            bufferedWriter.write(message + "\n");
+            bufferedWriter.write( message + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }

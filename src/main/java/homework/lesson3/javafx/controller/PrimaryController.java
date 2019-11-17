@@ -31,12 +31,28 @@ public class PrimaryController implements Initializable {
     Button sendMessageButton;
 
     public @FXML
+    Button connectionButton;
+
+    @FXML
+    Button changeNickButton;
+
+    @FXML
+    Button changeNickButtonOk;
+
+    @FXML
+    TextField textChangeNick;
+
+    public @FXML
     TextField loginField;
     public @FXML
     PasswordField passField;
 
     public @FXML
     HBox authPanel;
+
+    public @FXML
+    HBox changeNickPanel;
+
     public @FXML
     VBox chatPanel;
 
@@ -91,6 +107,8 @@ public class PrimaryController implements Initializable {
     public void sendMessage(ActionEvent actionEvent) {
         sendMessage();
     }
+
+
 
     private void sendMessage() {
         String message = messageText.getText();
@@ -154,5 +172,19 @@ public class PrimaryController implements Initializable {
     public void refreshUsersList(List<String> onlineUserNicknames) {
         onlineUserNicknames.add(ALL_ITEM);
         clientList.setItems(FXCollections.observableArrayList(onlineUserNicknames));
+    }
+
+    @FXML
+    public void changeNickOk(ActionEvent event) {
+        Message msg = Message.createChangeNick(textChangeNick.getText());
+        messageService.sendMessage(msg);
+        changeNickPanel.setVisible(false);
+        chatPanel.setVisible(true);
+    }
+
+    @FXML
+    public void changeNick(ActionEvent event) {
+        changeNickPanel.setVisible(true);
+        chatPanel.setVisible(false);
     }
 }

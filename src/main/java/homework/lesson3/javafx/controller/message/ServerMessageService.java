@@ -1,12 +1,12 @@
 package homework.lesson3.javafx.controller.message;
 
-import homework.lesson3.javafx.historymessfromchat.FileHelper;
-import javafx.scene.control.TextArea;
 import homework.lesson3.javafx.controller.Network;
 import homework.lesson3.javafx.controller.PrimaryController;
+import homework.lesson3.javafx.historymessfromchat.FileHelper;
 import homework.lesson3.messageconvert.Message;
 import homework.lesson3.messageconvert.message.PrivateMessage;
 import homework.lesson3.messageconvert.message.PublicMessage;
+import javafx.scene.control.TextArea;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,7 +68,9 @@ public class ServerMessageService implements IMessageService {
     public void sendMessage(Message message) {
         network.send(message.toJson());
         //Записали сообщение в файл
-        fileHelper.writeToFileHistory(primaryController.messageText.getText());
+        if (fileHelper != null) {
+            fileHelper.writeToFileHistory(primaryController.messageText.getText());
+        }
     }
 
     @Override
@@ -144,11 +146,12 @@ public class ServerMessageService implements IMessageService {
     private void processChangeNickErr(Message message) {
         String s = message.changeNickErrMessage.message;
         if (s != null) {
-            printMessageToChat(String.format("%s%n", s));chatTextArea.appendText(String.format("%s%n", s));
+            printMessageToChat(String.format("%s%n", s));
+            chatTextArea.appendText(String.format("%s%n", s));
         }
     }
 
-    private void printMessageToChat(String message){
+    private void printMessageToChat(String message) {
         chatTextArea.appendText(message);
         fileHelper.writeToFileHistory(message);
     }
@@ -169,15 +172,12 @@ public class ServerMessageService implements IMessageService {
 
     public void openFileHistory() {
         //Инициализируем класс для сохранения файлов после авторизации
-        FileHelper fileHelper = new FileHelper(primaryController.loginField.getText());
+        this.fileHelper = new FileHelper(primaryController.loginField.getText());
         List<String> messFromFile = fileHelper.readFromFileHistory();
         List<String> showMessToNick = new ArrayList<>();
+
         if (messFromFile.size() > countLastMessage) {
-           /* for (int i = messFromFile.size() - 100; i > 0; i--) {
-                messFromFile.remove(0);
-            }
-        }*/
-            for (int i = messFromFile.size() - (countLastMessage + 1); i < messFromFile.size(); i++) {
+            for (int i = messFromFile.size() - countLastMessage; i < messFromFile.size(); i++) {
                 showMessToNick.add(messFromFile.get(i));
             }
         } else {
@@ -187,10 +187,6 @@ public class ServerMessageService implements IMessageService {
         showMessToNick.forEach((str) -> {
             chatTextArea.appendText(str + "\n");
         });
-        /*messFromFile.forEach((str) -> {
-            chatTextArea.appendText(str + "\n");
-        });*/
-
     }
 
 }

@@ -10,7 +10,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="homework.lesson2.javafx.controller.PrimaryController">
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="homework.lesson3.javafx.controller.PrimaryController">
     <children>
         <HBox fx:id="authPanel" alignment="CENTER" layoutX="42.0" layoutY="98.0">
             <TextField fx:id="loginField" promptText="Логин" HBox.hgrow="ALWAYS" />
@@ -19,7 +20,7 @@
                     <Insets left="5.0" />
                 </HBox.margin>
             </PasswordField>
-            <Button onAction="#sendAuth" text="Подключиться" HBox.hgrow="ALWAYS">
+            <Button fx:id="connectionButton" onAction="#sendAuth" text="Подключиться" HBox.hgrow="ALWAYS">
                 <HBox.margin>
                     <Insets left="10.0" />
                 </HBox.margin>
