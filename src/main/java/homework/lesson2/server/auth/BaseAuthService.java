@@ -1,0 +1,43 @@
+package homework.lesson2.server.auth;
+
+import homework.lesson2.server.data.User;
+
+import javax.annotation.Nullable;
+import java.util.List;
+
+public class BaseAuthService implements IAuthService {
+    private List<User> users;
+
+    public BaseAuthService() {
+        users = List.of(new User("login1", "pass1", "nick1"),
+                new User("login2", "pass2", "nick2"),
+                new User("login3", "pass3", "nick3"));
+    }
+
+    @Override
+    public void start() {
+        System.out.println("Auth service is running");
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("Auth service has stopped");
+    }
+
+    @Nullable
+    @Override
+    public String getNickByLoginPass(String login, String pass) {
+        //Проверяем обязательные параметры
+        if (login == null || pass == null || login.isEmpty() || pass.isEmpty()) {
+            return null;
+        }
+
+        for (User u : users) {
+            if (u.getLogin().equals(login) && u.getPassword().equals(pass)) {
+                return u.getNick();
+            }
+        }
+        return null;
+    }
+
+}
