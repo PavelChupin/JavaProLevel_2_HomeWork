@@ -1,5 +1,8 @@
 package homework.lesson3.javafx.controller;
 
+import homework.lesson3.javafx.controller.message.IMessageService;
+import homework.lesson3.javafx.controller.message.ServerMessageService;
+import homework.lesson3.messageconvert.Message;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,9 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import homework.lesson3.javafx.controller.message.IMessageService;
-import homework.lesson3.javafx.controller.message.ServerMessageService;
-import homework.lesson3.messageconvert.Message;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -30,15 +30,6 @@ public class PrimaryController implements Initializable {
     public @FXML
     Button sendMessageButton;
 
-    @FXML
-    Button changeNickButton;
-
-    @FXML
-    Button changeNickButtonOk;
-
-    @FXML
-    TextField textChangeNick;
-
     public @FXML
     TextField loginField;
     public @FXML
@@ -46,10 +37,6 @@ public class PrimaryController implements Initializable {
 
     public @FXML
     HBox authPanel;
-
-    public @FXML
-    HBox changeNickPanel;
-
     public @FXML
     VBox chatPanel;
 
@@ -104,8 +91,6 @@ public class PrimaryController implements Initializable {
     public void sendMessage(ActionEvent actionEvent) {
         sendMessage();
     }
-
-
 
     private void sendMessage() {
         String message = messageText.getText();
@@ -169,18 +154,5 @@ public class PrimaryController implements Initializable {
     public void refreshUsersList(List<String> onlineUserNicknames) {
         onlineUserNicknames.add(ALL_ITEM);
         clientList.setItems(FXCollections.observableArrayList(onlineUserNicknames));
-    }
-
-
-    public void changeNickOk(ActionEvent event) {
-        Message msg = Message.createChangeNick(textChangeNick.getText());
-        messageService.sendMessage(msg);
-        changeNickPanel.setVisible(false);
-        chatPanel.setVisible(true);
-    }
-
-    public void changeNick(ActionEvent event) {
-        changeNickPanel.setVisible(true);
-        chatPanel.setVisible(false);
     }
 }

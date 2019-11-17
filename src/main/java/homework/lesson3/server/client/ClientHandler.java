@@ -13,8 +13,8 @@ import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static homework.lesson2.messageconvert.Message.createChangeNickErr;
-import static homework.lesson2.messageconvert.Message.createChangeNickOK;
+import static homework.lesson3.messageconvert.Message.createChangeNickErr;
+import static homework.lesson3.messageconvert.Message.createChangeNickOK;
 
 public class ClientHandler {
     private Server server;
