@@ -9,8 +9,13 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static homework.lesson2.messageconvert.Message.createChangeNickErr;
+import static homework.lesson2.messageconvert.Message.createChangeNickOK;
+import static homework.lesson2.messageconvert.Message.createPrivate;
 
 public class ClientHandler {
     private Server server;
@@ -32,7 +37,11 @@ public class ClientHandler {
                 try {
                     authentication(timeout);
                     readMessages();
-                } catch (IOException e) {
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                catch (IOException e) {
                     e.printStackTrace();
                 } finally {
                     closeConnection();
@@ -77,7 +86,7 @@ public class ClientHandler {
     }
     */
     // "/auth login password"
-    private void authentication(int timeout) throws IOException {
+    private void authentication(int timeout) throws IOException, SQLException {
         while (true) {
             Timer timeoutTimer = new Timer(true);
             timeoutTimer.schedule(new TimerTask() {
@@ -126,7 +135,7 @@ public class ClientHandler {
 
 
     //Основной метод чата по пересылке сообщений
-    private void readMessages() throws IOException {
+    private void readMessages() throws IOException, SQLException {
         while (true) {
             String clientMessage = in.readUTF();
             System.out.printf("PrivateMessage '%s' from client %s%n", clientMessage, clientName);
@@ -142,9 +151,33 @@ public class ClientHandler {
                     //server.messageToPrivateLogin(privateMessage.to, privateMessage.message);
                     server.messageToPrivateLogin(m);
                     break;
+                case CHANGE_NICK:
+                    changeNick(m);
+                    break;
                 case END:
                     return;
             }
+        }
+    }
+
+    private void changeNick(Message m) {
+        Message msg = null;
+        String newNick = m.changeNickMessage.newNick;
+        try {
+            server.getAuthService().changeNick(clientName,newNick);
+            clientName = newNick;
+            server.changesubscribe(this);
+            //Отправим сообщение пользователю, что ник изменен
+            msg = createChangeNickOK(clientName,"Сервер: Ник изменен");
+            server.messageChangeNickOk(msg);
+        } catch (SQLException e) {
+            //Отправим нашему пользователю сообщение об ошибке
+            msg =createChangeNickErr("Сервер: " + e.getMessage());
+            server.messageChangeNickErr(msg,this);
+        }catch (RuntimeException e) {
+           //Отправим нашему пользователю сообщение об ошибке
+            msg =createChangeNickErr("Сервер: " + e.getMessage());
+            server.messageChangeNickErr(msg,this);
         }
     }
 

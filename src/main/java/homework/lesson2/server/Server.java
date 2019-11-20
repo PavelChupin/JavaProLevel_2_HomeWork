@@ -1,7 +1,7 @@
 package homework.lesson2.server;
 
 import homework.lesson2.messageconvert.Message;
-import homework.lesson2.server.auth.BaseAuthService;
+import homework.lesson2.server.auth.DataBaseAuthService;
 import homework.lesson2.server.auth.IAuthService;
 import homework.lesson2.server.client.ClientHandler;
 
@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,12 +18,13 @@ import java.util.Properties;
 public class Server {
     private static final String HOST_PORT_PROP = "server.port";
     private static final String WAIT_TIMEOUT_AUTH = "server.wait.timeout.auth";
-    private final IAuthService authService = new BaseAuthService();
+    private final IAuthService authService = new DataBaseAuthService();//new BaseAuthService();
 
     private List<ClientHandler> clients = new ArrayList<>();
 
-    public Server() {
+    public Server() throws SQLException, ClassNotFoundException {
         System.out.println("Server is running");
+
         try (ServerSocket serverSocket = new ServerSocket(getProperty(HOST_PORT_PROP))) {
 
             authService.start();
@@ -51,6 +53,18 @@ public class Server {
         broadcastClientList();
     }
 
+    //Метод обновления ника пользователя
+    public synchronized void changesubscribe(ClientHandler clientHandler) {
+        broadcastClientList();
+    }
+
+    //Метод отписки пользователя от сервера
+    public synchronized void unSubscribe(ClientHandler clientHandler) {
+        clients.remove(clientHandler);
+        broadcastClientList();
+    }
+
+    //Добавления и обновления списка пользователей в чате
     private void broadcastClientList() {
         List<String> nickNames = new ArrayList<>();
         for (ClientHandler client : clients) {
@@ -60,11 +74,7 @@ public class Server {
         broadcastMessage(message.toJson(), null);
     }
 
-    //Метод отписки пользователя от сервера
-    public synchronized void unSubscribe(ClientHandler clientHandler) {
-        clients.remove(clientHandler);
-        broadcastClientList();
-    }
+
 
     public IAuthService getAuthService() {
         return authService;
@@ -91,21 +101,30 @@ public class Server {
     }
 
     public void broadcastMessage(Message message, ClientHandler unfilteredClients) {
-        broadcastMessage(message.toJson(),unfilteredClients);
-    }
-
-    public synchronized void messageToPrivateLogin(String nickName, String s) {
-        for (ClientHandler client : clients) {
-            if (client.getClientName().equals(nickName)) {
-                client.sendMessage(s);
-                break;
-            }
-        }
+        broadcastMessage(message.toJson(), unfilteredClients);
     }
 
     public synchronized void messageToPrivateLogin(Message message) {
         for (ClientHandler client : clients) {
             if (client.getClientName().equals(message.privateMessage.to)) {
+                client.sendMessage(message.toJson());
+                break;
+            }
+        }
+    }
+
+    public synchronized void messageChangeNickOk(Message message) {
+        for (ClientHandler client : clients) {
+            if (client.getClientName().equals(message.changeNickOkMessage.newNick)) {
+                client.sendMessage(message.toJson());
+                break;
+            }
+        }
+    }
+
+    public synchronized void messageChangeNickErr(Message message, ClientHandler clientHandler) {
+        for (ClientHandler client : clients) {
+            if (client.getClientName().equals(clientHandler.getClientName())) {
                 client.sendMessage(message.toJson());
                 break;
             }
@@ -125,6 +144,5 @@ public class Server {
         }
         return value;
     }
-
 
 }

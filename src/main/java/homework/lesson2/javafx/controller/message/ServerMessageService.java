@@ -81,6 +81,14 @@ public class ServerMessageService implements IMessageService {
                 primaryController.showAuthError(message.authErrorMessage.errorMsg);
                 break;
             }
+            case CHANGE_NICK_OK: {
+                processChangeNickOk(message);
+                break;
+            }
+            case CHANGE_NICK_ERR: {
+                processChangeNickErr(message);
+                break;
+            }
             case CLIENT_LIST:
                 List<String> onlineUserNicknames = message.clientListMessage.online;
                 primaryController.refreshUsersList(onlineUserNicknames);
@@ -89,6 +97,7 @@ public class ServerMessageService implements IMessageService {
                 throw new IllegalArgumentException("Unknown command type: " + message.command);
         }
     }
+
 
     private void processPublicMessage(Message message) {
         PublicMessage publicMessage = message.publicMessage;
@@ -114,12 +123,27 @@ public class ServerMessageService implements IMessageService {
         primaryController.showChatPanel();
     }
 
-    @Override
-    public void close() throws IOException {
-        if (needStopServerOnClosed) {
-            sendMessage(Message.serverEndMessage());
+
+    private void processChangeNickOk(Message message) {
+        String s = message.changeNickOkMessage.message;
+        primaryController.setNickName(message.changeNickOkMessage.newNick);
+        if (s != null) {
+            chatTextArea.appendText(String.format("%s%n", s));
         }
-        network.close();
     }
 
-}
+    private void processChangeNickErr(Message message) {
+        String s = message.changeNickErrMessage.message;
+        if (s != null) {
+            chatTextArea.appendText(String.format("%s%n", s));
+        }}
+
+        @Override
+        public void close () throws IOException {
+            if (needStopServerOnClosed) {
+                sendMessage(Message.serverEndMessage());
+            }
+            network.close();
+        }
+
+    }

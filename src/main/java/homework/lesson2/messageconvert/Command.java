@@ -8,5 +8,7 @@ public enum Command {
     AUTH_ERROR,
     END,
     CLIENT_LIST,
-
+    CHANGE_NICK,
+    CHANGE_NICK_OK,
+    CHANGE_NICK_ERR,
 }
