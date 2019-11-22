@@ -14,13 +14,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
     private static final String HOST_PORT_PROP = "server.port";
     private static final String WAIT_TIMEOUT_AUTH = "server.wait.timeout.auth";
     private final IAuthService authService = new DataBaseAuthService();//new BaseAuthService();
+    private Properties serverProperties = new Properties();
 
     private List<ClientHandler> clients = new ArrayList<>();
+    private ExecutorService executorService = Executors.newCachedThreadPool();
 
     public Server() throws SQLException, ClassNotFoundException {
         System.out.println("Server is running");
@@ -44,6 +48,7 @@ public class Server {
             e.printStackTrace();
         } finally {
             authService.stop();
+            executorService.shutdownNow();
         }
     }
 
@@ -132,7 +137,6 @@ public class Server {
     }
 
     private int getProperty(String property) {
-        Properties serverProperties = new Properties();
         int value;
         try (InputStream inputStream = getClass().getResourceAsStream("/application.properties")) {
             serverProperties.load(inputStream);
@@ -145,4 +149,7 @@ public class Server {
         return value;
     }
 
+    public ExecutorService getExecutorService() {
+        return executorService;
+    }
 }
