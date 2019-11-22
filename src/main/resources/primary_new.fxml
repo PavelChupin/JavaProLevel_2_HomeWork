@@ -10,7 +10,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="homework.lesson2.javafx.controller.PrimaryController">
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="homework.lesson3.javafx.controller.PrimaryController">
     <children>
         <HBox fx:id="authPanel" alignment="CENTER" layoutX="42.0" layoutY="98.0">
             <TextField fx:id="loginField" promptText="Логин" HBox.hgrow="ALWAYS" />
@@ -19,7 +20,7 @@
                     <Insets left="5.0" />
                 </HBox.margin>
             </PasswordField>
-            <Button onAction="#sendAuth" text="Подключиться" HBox.hgrow="ALWAYS">
+            <Button fx:id="connectionButton" onAction="#sendAuth" text="Подключиться" HBox.hgrow="ALWAYS">
                 <HBox.margin>
                     <Insets left="10.0" />
                 </HBox.margin>
@@ -32,31 +33,31 @@
             <children>
                 <HBox spacing="10.0">
                     <children>
-                  <ListView fx:id="clientList" prefHeight="200.0" prefWidth="143.0" />
-                      <TextArea fx:id="chatTextArea" editable="false" wrapText="true">
-                          <padding>
-                              <Insets bottom="5.0" right="5.0" />
-                          </padding>
-                      </TextArea>
+                        <ListView fx:id="clientList" prefHeight="200.0" prefWidth="143.0" />
+                        <TextArea fx:id="chatTextArea" editable="false" wrapText="true">
+                            <padding>
+                                <Insets bottom="5.0" right="5.0" />
+                            </padding>
+                        </TextArea>
                     </children>
                 </HBox>
-            <HBox prefHeight="0.0" prefWidth="478.0">
-               <children>
+                <HBox prefHeight="0.0" prefWidth="478.0">
+                    <children>
                         <TextField fx:id="messageText" onAction="#sendText" prefHeight="25.0" prefWidth="406.0" HBox.hgrow="ALWAYS" />
                         <Button fx:id="sendMessageButton" minWidth="100.0" mnemonicParsing="false" onAction="#sendMessage" text="Send" />
-                  <Button fx:id="changeNickButton" mnemonicParsing="false" onAction="#changeNick" prefHeight="25.0" prefWidth="96.0" text="ChangeNick" />
-               </children>
-            </HBox>
+                        <Button fx:id="changeNickButton" mnemonicParsing="false" onAction="#changeNick" prefHeight="25.0" prefWidth="96.0" text="ChangeNick" />
+                    </children>
+                </HBox>
             </children>
             <padding>
                 <Insets bottom="5.0" right="5.0" />
             </padding>
         </VBox>
-      <HBox fx:id="changeNickPanel" layoutX="223.0" layoutY="70.0" prefHeight="35.0" prefWidth="295.0" visible="false">
-         <children>
-            <TextField fx:id="textChangeNick" />
-            <Button fx:id="changeNickButtonOk" mnemonicParsing="false" onAction="#changeNickOk" prefHeight="25.0" prefWidth="96.0" text="Ok" />
-         </children>
-      </HBox>
+        <HBox fx:id="changeNickPanel" layoutX="223.0" layoutY="70.0" prefHeight="35.0" prefWidth="295.0" visible="false">
+            <children>
+                <TextField fx:id="textChangeNick" />
+                <Button fx:id="changeNickButtonOk" mnemonicParsing="false" onAction="#changeNickOk" prefHeight="25.0" prefWidth="96.0" text="Ok" />
+            </children>
+        </HBox>
     </children>
 </AnchorPane>

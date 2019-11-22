@@ -1,5 +1,8 @@
 package homework.lesson3.javafx.controller;
 
+import homework.lesson3.javafx.controller.message.IMessageService;
+import homework.lesson3.javafx.controller.message.ServerMessageService;
+import homework.lesson3.messageconvert.Message;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,9 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import homework.lesson3.javafx.controller.message.IMessageService;
-import homework.lesson3.javafx.controller.message.ServerMessageService;
-import homework.lesson3.messageconvert.Message;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -29,6 +29,9 @@ public class PrimaryController implements Initializable {
     TextField messageText;
     public @FXML
     Button sendMessageButton;
+
+    public @FXML
+    Button connectionButton;
 
     @FXML
     Button changeNickButton;
@@ -171,7 +174,7 @@ public class PrimaryController implements Initializable {
         clientList.setItems(FXCollections.observableArrayList(onlineUserNicknames));
     }
 
-
+    @FXML
     public void changeNickOk(ActionEvent event) {
         Message msg = Message.createChangeNick(textChangeNick.getText());
         messageService.sendMessage(msg);
@@ -179,6 +182,7 @@ public class PrimaryController implements Initializable {
         chatPanel.setVisible(true);
     }
 
+    @FXML
     public void changeNick(ActionEvent event) {
         changeNickPanel.setVisible(true);
         chatPanel.setVisible(false);
