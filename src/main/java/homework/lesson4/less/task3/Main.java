@@ -30,7 +30,7 @@ public class Main {
                 }
             }));*/
         }
-
+        executorService.shutdown();
         /*threads.forEach((a)->{
             a.start();
         });*/
