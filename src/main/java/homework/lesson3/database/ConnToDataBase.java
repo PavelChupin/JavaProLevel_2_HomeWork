@@ -13,6 +13,7 @@ public class ConnToDataBase {
     private static final String DATABASE_PASSSWORD = "database.password";
 
     private Connection connection = null;
+    private Properties serverProperties = new Properties();
 
     public ConnToDataBase() throws SQLException, ClassNotFoundException {
 
@@ -45,7 +46,7 @@ public class ConnToDataBase {
     }
 
     private String getProperty(String property) {
-        Properties serverProperties = new Properties();
+        //Properties serverProperties = new Properties();
         String value;
         try (InputStream inputStream = getClass().getResourceAsStream("/application.properties")) {
             serverProperties.load(inputStream);

@@ -43,7 +43,8 @@ public class ClientHandler {
                 }
             });
             thread.setDaemon(true);
-            thread.start();
+            server.getExecutorService().execute(thread);
+            //thread.start();
         } catch (IOException e) {
             throw new RuntimeException("Failed to create client handler", e);
         }
@@ -101,6 +102,7 @@ public class ClientHandler {
                     }
                 }
             }, timeout * 1000);
+
             String clientMessage = in.readUTF();
             synchronized (this) {
                 Message message = Message.fromJson(clientMessage);
