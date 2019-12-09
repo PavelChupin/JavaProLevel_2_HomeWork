@@ -4,6 +4,7 @@ import homework.lesson6.chat.messageconvert.Message;
 import homework.lesson6.chat.server.auth.DataBaseAuthService;
 import homework.lesson6.chat.server.auth.IAuthService;
 import homework.lesson6.chat.server.client.ClientHandler;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,14 +21,19 @@ import java.util.concurrent.Executors;
 public class Server {
     private static final String HOST_PORT_PROP = "server.port";
     private static final String WAIT_TIMEOUT_AUTH = "server.wait.timeout.auth";
+    private static final Logger logger = Logger.getLogger("file");
+
     private final IAuthService authService = new DataBaseAuthService();//new BaseAuthService();
     private Properties serverProperties = new Properties();
 
     private List<ClientHandler> clients = new ArrayList<>();
     private ExecutorService executorService = Executors.newCachedThreadPool();
 
+
+
     public Server() throws SQLException, ClassNotFoundException {
         System.out.println("Server is running");
+        logger.info("Server is running");
 
         try (ServerSocket serverSocket = new ServerSocket(getProperty(HOST_PORT_PROP))) {
 
@@ -36,15 +42,23 @@ public class Server {
             //Бесконечный цикл ожидания подключения пользователей
             while (true) {
                 System.out.println("Awaiting client connection...");
+                logger.info("Awaiting client connection...");
+
                 //Ждем подключений
                 Socket socket = serverSocket.accept();
                 System.out.println("Client has connected");
+                logger.info("Client has connected");
+
                 //Подключения получено, запускаем сервис авторизации
                 new ClientHandler(socket, this, getProperty(WAIT_TIMEOUT_AUTH));
             }
 
         } catch (IOException e) {
             System.err.println("Ошибка работы сервера. Причина: " + e.getMessage());
+            logger.info("Ошибка работы сервера. Причина: " + e.getMessage());
+            if (logger.isDebugEnabled()){
+                logger.debug(e.getStackTrace());
+            }
             e.printStackTrace();
         } finally {
             authService.stop();

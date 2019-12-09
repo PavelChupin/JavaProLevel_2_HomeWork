@@ -4,6 +4,7 @@ import homework.lesson6.chat.messageconvert.Command;
 import homework.lesson6.chat.messageconvert.Message;
 import homework.lesson6.chat.messageconvert.message.AuthMessage;
 import homework.lesson6.chat.server.Server;
+import org.apache.log4j.Logger;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -14,6 +15,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ClientHandler {
+    private static final Logger logger = Logger.getLogger("file");
     private Server server;
 
     private String clientName;
@@ -32,11 +34,20 @@ public class ClientHandler {
             Thread thread = new Thread(() -> {
                 try {
                     authentication(timeout);
+                    logger.info("Client NickName = " + clientName + " is authentication");
                     readMessages();
 
                 } catch (SQLException e) {
+                    logger.info(e.getMessage());
+                    if (logger.isDebugEnabled()){
+                        logger.debug(e.getStackTrace());
+                    }
                     e.printStackTrace();
                 } catch (IOException e) {
+                    logger.info(e.getMessage());
+                    if (logger.isDebugEnabled()){
+                        logger.debug(e.getStackTrace());
+                    }
                     e.printStackTrace();
                 } finally {
                     closeConnection();
@@ -92,6 +103,7 @@ public class ClientHandler {
                         synchronized (this) {
                             if (clientName == null) {
                                 System.out.println("authentication is terminated caused by timeout expired");
+                                logger.info("authentication is terminated caused by timeout expired");
                                 sendMessage(Message.createAuthError("Истекло время ожидания подключения!"));
                                 Thread.sleep(100);
                                 socket.close();
@@ -105,6 +117,7 @@ public class ClientHandler {
 
             String clientMessage = in.readUTF();
             synchronized (this) {
+                logger.info(clientMessage);
                 Message message = Message.fromJson(clientMessage);
                 if (message.command == Command.AUTH_MESSAGE) {
                     AuthMessage authMessage = message.authMessage;
@@ -135,6 +148,7 @@ public class ClientHandler {
     private void readMessages() throws IOException, SQLException {
         while (true) {
             String clientMessage = in.readUTF();
+            logger.info(clientMessage);
             System.out.printf("PrivateMessage '%s' from client %s%n", clientMessage, clientName);
             Message m = Message.fromJson(clientMessage);
             switch (m.command) {
