@@ -6,8 +6,7 @@ import homework.lesson7.annotation.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MyTest {
     private static List<Method> methodsTest = new ArrayList<>();
@@ -29,6 +28,14 @@ public class MyTest {
             methodBefor.setAccessible(true);
             methodBefor.invoke(o);
         }
+
+        //Сортируем по приоритетам
+        Collections.sort(methodsTest, new Comparator<Method>() {
+            @Override
+            public int compare(Method o1, Method o2) {
+                return o1.getAnnotation(Test.class).priority() - o2.getAnnotation(Test.class).priority();
+            }
+        });
 
         for (Method m : methodsTest) {
             m.setAccessible(true);
