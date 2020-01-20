@@ -55,16 +55,23 @@ class ArrOutput {
 
             arr[x1][y1] = c;
         }
-        print(arr);
+        print(arr,x,y);
         System.out.println();
-
-
     }
 
-    private void print(int[][] arr) {
+    private void print(int[][] arr,int x, int y) {
+        String s = "";
+        int O = new Integer(x*y).toString().length();
+
+        for (int i = 0; i < O ; i++) {
+            s +="0";
+        }
+
+        String result = "";
         for (int i = 0; i < arr[0].length; i++) {
             for (int j = 0; j < arr.length; j++) {
-                System.out.print(arr[j][i] + " ");
+                result = s + arr[j][i];
+                System.out.print(result.substring(result.length() - (s.length() + 1)) + " ");
             }
             System.out.println();
         }
